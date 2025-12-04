@@ -1,0 +1,19 @@
+{
+  "name": "cursor-demo-1",
+  "version": "1.0.0",
+  "description": "YouTube Local Clone - static React app served via Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "react",
+    "static",
+    "node",
+    "demo"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
+

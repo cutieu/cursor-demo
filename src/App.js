@@ -118,6 +118,8 @@ const sidebarSections = [
   },
 ];
 
+const e = React.createElement;
+
 export function App() {
   const [query, setQuery] = React.useState("");
   const [activeChip, setActiveChip] = React.useState("Все");
@@ -143,143 +145,176 @@ export function App() {
     return matchesQuery && matchesChip;
   });
 
-  return (
-    <div className="app">
-      <Header query={query} onQueryChange={setQuery} />
-      <div className="app-body">
-        <Sidebar />
-        <main className="main">
-          <Chips active={activeChip} onChange={setActiveChip} />
-          <div className="content">
-            <VideoGrid videos={filteredVideos} />
-          </div>
-        </main>
-      </div>
-    </div>
+  return e(
+    "div",
+    { className: "app" },
+    e(Header, { query, onQueryChange: setQuery }),
+    e(
+      "div",
+      { className: "app-body" },
+      e(Sidebar, null),
+      e(
+        "main",
+        { className: "main" },
+        e(Chips, { active: activeChip, onChange: setActiveChip }),
+        e(
+          "div",
+          { className: "content" },
+          e(VideoGrid, { videos: filteredVideos })
+        )
+      )
+    )
   );
 }
 
 function Header({ query, onQueryChange }) {
-  return (
-    <header className="app-header">
-      <div className="header-left">
-        <div className="burger" aria-label="Меню">
-          <div style={{ width: 16 }}>
-            <Bar />
-            <Bar />
-            <Bar />
-          </div>
-        </div>
-        <a href="#" className="logo">
-          <div className="logo-icon" />
-          <span>YouTube</span>
-          <span className="logo-region">RU</span>
-        </a>
-      </div>
-
-      <div className="header-center">
-        <div className="search-wrapper">
-          <input
-            className="search-input"
-            placeholder="Введите запрос"
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-          />
-          <button className="search-button" aria-label="Поиск">
-            <div className="search-icon" />
-          </button>
-        </div>
-        <button className="mic-button" aria-label="Голосовой поиск">
-          <div className="mic-icon" />
-        </button>
-      </div>
-
-      <div className="header-right">
-        <div className="icon-button" aria-label="Создать" />
-        <div className="icon-button" aria-label="Уведомления" />
-        <div className="avatar">K</div>
-      </div>
-    </header>
+  return e(
+    "header",
+    { className: "app-header" },
+    e(
+      "div",
+      { className: "header-left" },
+      e(
+        "div",
+        { className: "burger", "aria-label": "Меню" },
+        e(
+          "div",
+          { style: { width: 16 } },
+          e(Bar, null),
+          e(Bar, null),
+          e(Bar, null)
+        )
+      ),
+      e(
+        "a",
+        { href: "#", className: "logo" },
+        e("div", { className: "logo-icon" }),
+        e("span", null, "YouTube"),
+        e("span", { className: "logo-region" }, "RU")
+      )
+    ),
+    e(
+      "div",
+      { className: "header-center" },
+      e(
+        "div",
+        { className: "search-wrapper" },
+        e("input", {
+          className: "search-input",
+          placeholder: "Введите запрос",
+          value: query,
+          onChange: (eEvent) => onQueryChange(eEvent.target.value),
+        }),
+        e(
+          "button",
+          { className: "search-button", "aria-label": "Поиск" },
+          e("div", { className: "search-icon" })
+        )
+      ),
+      e(
+        "button",
+        { className: "mic-button", "aria-label": "Голосовой поиск" },
+        e("div", { className: "mic-icon" })
+      )
+    ),
+    e(
+      "div",
+      { className: "header-right" },
+      e("div", { className: "icon-button", "aria-label": "Создать" }),
+      e("div", { className: "icon-button", "aria-label": "Уведомления" }),
+      e("div", { className: "avatar" }, "K")
+    )
   );
 }
 
 function Bar() {
-  return (
-    <div
-      style={{
-        height: 2,
-        background: "#f1f1f1",
-        borderRadius: 999,
-        margin: "3px 0",
-      }}
-    />
-  );
+  return e("div", {
+    style: {
+      height: 2,
+      background: "#f1f1f1",
+      borderRadius: 999,
+      margin: "3px 0",
+    },
+  });
 }
 
 function Sidebar() {
-  return (
-    <aside className="sidebar">
-      {sidebarSections.map((section, idx) => (
-        <div key={idx} className="sidebar-section">
-          {section.title && (
-            <div className="sidebar-section-title">{section.title}</div>
-          )}
-          {section.items.map((item) => (
-            <div
-              key={item.label}
-              className={
-                "sidebar-item" + (item.active ? " active" : "")
-              }
-            >
-              <div className="sidebar-icon" />
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      ))}
-    </aside>
+  return e(
+    "aside",
+    { className: "sidebar" },
+    sidebarSections.map((section, idx) =>
+      e(
+        "div",
+        { key: idx, className: "sidebar-section" },
+        section.title
+          ? e("div", { className: "sidebar-section-title" }, section.title)
+          : null,
+        section.items.map((item) =>
+          e(
+            "div",
+            {
+              key: item.label,
+              className: "sidebar-item" + (item.active ? " active" : ""),
+            },
+            e("div", { className: "sidebar-icon" }),
+            e("span", null, item.label)
+          )
+        )
+      )
+    )
   );
 }
 
 function Chips({ active, onChange }) {
-  return (
-    <div className="chips">
-      {chips.map((chip) => (
-        <button
-          key={chip}
-          className={"chip" + (chip === active ? " active" : "")}
-          onClick={() => onChange(chip)}
-        >
-          {chip}
-        </button>
-      ))}
-    </div>
+  return e(
+    "div",
+    { className: "chips" },
+    chips.map((chip) =>
+      e(
+        "button",
+        {
+          key: chip,
+          className: "chip" + (chip === active ? " active" : ""),
+          onClick: () => onChange(chip),
+        },
+        chip
+      )
+    )
   );
 }
 
 function VideoGrid({ videos }) {
-  return (
-    <div className="video-grid">
-      {videos.map((video) => (
-        <div key={video.id} className="video-card">
-          <div className="video-thumb">
-            <div className="video-badge" />
-            <div className="video-duration">{video.duration}</div>
-          </div>
-          <div className="video-info">
-            <div className="channel-avatar">{video.initial}</div>
-            <div className="video-meta">
-              <div className="video-title">{video.title}</div>
-              <div className="video-channel">{video.channel}</div>
-              <div className="video-stats">
-                {video.views} • {video.timeAgo}
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+  return e(
+    "div",
+    { className: "video-grid" },
+    videos.map((video) =>
+      e(
+        "div",
+        { key: video.id, className: "video-card" },
+        e(
+          "div",
+          { className: "video-thumb" },
+          e("div", { className: "video-badge" }),
+          e("div", { className: "video-duration" }, video.duration)
+        ),
+        e(
+          "div",
+          { className: "video-info" },
+          e("div", { className: "channel-avatar" }, video.initial),
+          e(
+            "div",
+            { className: "video-meta" },
+            e("div", { className: "video-title" }, video.title),
+            e("div", { className: "video-channel" }, video.channel),
+            e(
+              "div",
+              { className: "video-stats" },
+              `${video.views} • ${video.timeAgo}`
+            )
+          )
+        )
+      )
+    )
   );
 }
-
 
